@@ -8,6 +8,8 @@ import Web3 from "web3";
 
 export default function Home() {
   const [connected, setConnected] = useState(false);
+  const [isJSON, setIsJSON] = useState(false);
+  const [textAreaValue, setTextAreaValue] = useState("");
   const monthArray = [
     "January",
     "February",
@@ -37,6 +39,25 @@ export default function Home() {
       setConnected(false);
     }
     console.log("accounts: ", accounts);
+  }
+
+  const parseJSON = async () => {
+    try {
+      const studentData = eval(textAreaValue);
+      console.log("Text area contains: ", studentData);
+      for (let i = 0; i < studentData.length; i++) {
+        const properties = eval(studentData[i]);
+        const ipfsJSON = {
+          title: "JKUAT GRADUATE CERTIFICATE",
+          type: "certificate",
+          properties
+        }
+        console.log("ipfs JSON", ipfsJSON);
+      }
+    }
+    catch (error) {
+      alert(`Parse JSON error: ${error.message}`)
+    }
   }
 
   const mintCertificates = async () => {
@@ -88,9 +109,20 @@ export default function Home() {
         </div>
         <div className='container m-6'>
           <p className='is-size-3 mb-2'>How would you like to generate graduate certificates?</p>
-          <section className='box is-clickable'>
+          <section className='box is-clickable' onClick={() => {
+            setIsJSON(!isJSON);
+          }}>
             <p>Insert JSON</p>
           </section>
+          {isJSON && <section>
+            <textarea className='textarea' onChange={(e) => {
+              setTextAreaValue(e.target.value);
+            }}></textarea>
+            <button className='button is-primary mt-3 mb-3' onClick={() => {
+              parseJSON()
+            }}>Submit</button>
+          </section>
+          }
           <section className='box is-clickable'>
             <p>Insert CSV</p>
           </section>
