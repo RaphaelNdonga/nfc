@@ -20,6 +20,6 @@ describe("NFC Test", function () {
     it("should increase the counter", async () => {
         let counter = await NFC.counter();
         console.log("Counter: ", counter);
-        expect(counter.gt(0)).true
+        expect(counter.gt(1)).true
     })
 })
