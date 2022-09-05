@@ -1,5 +1,6 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
+const fs = require("fs");
 
 describe("NFC Test", function () {
     let NFC;
@@ -14,8 +15,9 @@ describe("NFC Test", function () {
         await NFC.deployed();
     });
     it("NFC deployed", async () => {
-        console.log("NFC: ", NFC);
+        console.log("NFC: ", NFC.abi);
         expect(NFC).not.null
+        fs.copyFileSync(__dirname + "/../artifacts/contracts/NFC.sol/NFC.json", __dirname + "/../../nfc/pages/NFC.json")
     })
     it("should increase the counter", async () => {
         let counter = await NFC.counter();
