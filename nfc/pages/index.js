@@ -76,7 +76,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div className='navbar m-4 has-shadow'>
+        <div className='navbar m-6'>
           <div className='navbar-brand'>
             <h1 className='title is-2'>Non Fungible Certificates</h1>
           </div>
@@ -86,8 +86,17 @@ export default function Home() {
           </div>
 
         </div>
-        <div className='container'>
-          <button className='button is-primary' onClick={mintCertificates}>Mint</button>
+        <div className='container m-6'>
+          <p className='is-size-3 mb-2'>How would you like to generate graduate certificates?</p>
+          <section className='box is-clickable'>
+            <p>Insert JSON</p>
+          </section>
+          <section className='box is-clickable'>
+            <p>Insert CSV</p>
+          </section>
+          <section className='box is-clickable'>
+            <p>Insert one by one</p>
+          </section>
         </div>
 
       </main>
