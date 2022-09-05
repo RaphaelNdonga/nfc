@@ -8,6 +8,20 @@ import Web3 from "web3";
 
 export default function Home() {
   const [connected, setConnected] = useState(false);
+  const monthArray = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ]
   const connectMetamask = async () => {
     console.log("window.ethereum: ", window.ethereum);
     if (window.ethereum === undefined) {
@@ -37,9 +51,16 @@ export default function Home() {
     const NFCContract = new web3.eth.Contract(abi);
     let dummyOwners = ["0xF5591E14eB99aB51C10ba75DabA7d0D6345293eb", "0x9211cd5a0940FA9F71bcbcF1d45b0EC20Cb62A38"];
     let dummyUrls = ["https://ipfs.io/1", "https://ipfs.io/2"];
+
+    /**
+     * The date functionality should eventually be transferred to the smart contract.
+     */
+    let date = new Date();
+    let month = monthArray[date.getMonth()];
+    let year = date.getFullYear();
     const deployment = await NFCContract.deploy({
       data: NFCJSON.bytecode,
-      arguments: ["JKUAT-GRADUATES-2022", "JKUAT Certificate", dummyOwners, dummyUrls]
+      arguments: [`GRADUATES-${month}-${year}`, "JKUAT", dummyOwners, dummyUrls]
     }).send({
       from: accounts[0]
     });
