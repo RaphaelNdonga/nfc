@@ -3,6 +3,8 @@ import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import "bulma/css/bulma.css";
 import { useState } from 'react';
+import NFCJSON from './NFC.json';
+import Web3 from "web3";
 
 export default function Home() {
   const [connected, setConnected] = useState(false);
@@ -23,6 +25,27 @@ export default function Home() {
     console.log("accounts: ", accounts);
   }
 
+  const mintCertificates = async () => {
+    const abi = NFCJSON.abi;
+    if (window.ethereum == undefined) {
+      alert("please install metamask");
+      return;
+    }
+    const web3 = new Web3(window.ethereum);
+    const accounts = await web3.eth.getAccounts();
+    console.log("web3 account: ", accounts);
+    const NFCContract = new web3.eth.Contract(abi);
+    let dummyOwners = ["0xF5591E14eB99aB51C10ba75DabA7d0D6345293eb", "0x9211cd5a0940FA9F71bcbcF1d45b0EC20Cb62A38"];
+    let dummyUrls = ["https://ipfs.io/1", "https://ipfs.io/2"];
+    const deployment = await NFCContract.deploy({
+      data: NFCJSON.bytecode,
+      arguments: ["JKUAT-GRADUATES-2022", "JKUAT Certificate", dummyOwners, dummyUrls]
+    }).send({
+      from: accounts[0]
+    });
+    console.log("NFC Contract: ", deployment);
+  }
+
 
   return (
     <div className={styles.container}>
@@ -41,6 +64,9 @@ export default function Home() {
             {connected ? <button className='button is-primary' disabled>Connected</button> : <button className='button is-primary' onClick={connectMetamask}>Connect Wallet</button>}
           </div>
 
+        </div>
+        <div className='container'>
+          <button className='button is-primary' onClick={mintCertificates}>Mint</button>
         </div>
 
       </main>
