@@ -5,8 +5,21 @@ import "bulma/css/bulma.css";
 import { useState } from 'react';
 import NFCJSON from './NFC.json';
 import Web3 from "web3";
+import { create } from "ipfs-http-client";
 
 export default function Home() {
+  const projectId = "2EOa6dNYowZzjK9u2lexz7yqWLA";
+  const projectSecret = "cda9ecceee45c322470cdde0596235cb";
+  const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
+  const client = create({
+    host: 'ipfs.infura.io',
+    port: 5001,
+    protocol: 'https',
+    apiPath: '/api/v0',
+    headers: {
+      authorization: auth
+    }
+  });
   const [connected, setConnected] = useState(false);
   const [isJSON, setIsJSON] = useState(false);
   const [textAreaValue, setTextAreaValue] = useState("");
@@ -53,6 +66,9 @@ export default function Home() {
           properties
         }
         console.log("ipfs JSON", ipfsJSON);
+        const ipfsFile = await client.add(JSON.stringify(ipfsJSON));
+        const ipfsLink = `https://ipfs.io/ipfs/${ipfsFile.path}`
+        console.log(`View file at: ${ipfsLink}`);
       }
     }
     catch (error) {
