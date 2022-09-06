@@ -37,6 +37,15 @@ export default function Home() {
     "November",
     "December"
   ]
+  const dayArray = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ]
   const connectMetamask = async () => {
     console.log("window.ethereum: ", window.ethereum);
     if (window.ethereum === undefined) {
@@ -61,17 +70,39 @@ export default function Home() {
       const studentData = eval(textAreaValue);
       console.log("Text area contains: ", studentData);
       for (let i = 0; i < studentData.length; i++) {
-        const properties = eval(studentData[i]);
+        const attributes = eval(studentData[i]);
+        let svgLink = `<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 500 350'><style>.base { fill: white; font-family: serif; font-size: 16px; }</style><rect width='100%' height='100%' fill='black' /><text x='10%' y='40%' class='base' dominant-baseline='middle' text-anchor='start'>Name: ${attributes.name}</text><text x='10%' y='50%' class='base' dominant-baseline='middle' text-anchor='start'>Degree awarded: ${attributes.course}</text><text x='10%' y='60%' class='base' dominant-baseline='middle' text-anchor='start'>Honors: ${attributes.honors}</text></svg>`
+        let imageData = btoa(svgLink);
+        let imageLink = `data:image/svg+xml;base64,${imageData}`;
+        console.log("image link: ", imageLink);
+        const date = new Date();
+        const day = date.getDay();
+        const dateNumber = date.getDate();
+        const month = date.getMonth();
+        const year = date.getFullYear();
         const ipfsJSON = {
-          title: "JKUAT GRADUATE CERTIFICATE",
-          type: "certificate",
-          properties
+          name: "JKUAT GRADUATE CERTIFICATE",
+          image: imageLink,
+          description: `This is to certify that ${attributes.name} having satisfied all the requirements for the degree of ${attributes.course} ${attributes.honors} was admitted to the degree at a congregation held at this university on ${dayArray[day]} ${dateNumber} of ${monthArray[month]} in the year ${year}`,
+          attributes: [
+            {
+              trait_type: "name",
+              value: attributes.name
+            },
+            {
+              trait_type: "honors",
+              value: attributes.honors
+            }, {
+              trait_type: "course",
+              value: attributes.course
+            },
+          ]
         }
         console.log("ipfs JSON", ipfsJSON);
         const ipfsFile = await client.add(JSON.stringify(ipfsJSON));
         const ipfsLink = `https://ipfs.io/ipfs/${ipfsFile.path}`
         console.log(`View file at: ${ipfsLink}`);
-        owners.push(properties.address);
+        owners.push(attributes.address);
         urls.push(ipfsLink);
       }
       console.log("owners: ", owners);
