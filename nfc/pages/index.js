@@ -55,6 +55,8 @@ export default function Home() {
   }
 
   const parseJSON = async () => {
+    let owners = [];
+    let urls = [];
     try {
       const studentData = eval(textAreaValue);
       console.log("Text area contains: ", studentData);
@@ -69,14 +71,19 @@ export default function Home() {
         const ipfsFile = await client.add(JSON.stringify(ipfsJSON));
         const ipfsLink = `https://ipfs.io/ipfs/${ipfsFile.path}`
         console.log(`View file at: ${ipfsLink}`);
+        owners.push(properties.address);
+        urls.push(ipfsLink);
       }
+      console.log("owners: ", owners);
+      console.log("urls: ", urls);
+      mintCertificates(owners, urls);
     }
     catch (error) {
       alert(`Parse JSON error: ${error.message}`)
     }
   }
 
-  const mintCertificates = async () => {
+  const mintCertificates = async (owners, urls) => {
     const abi = NFCJSON.abi;
     if (window.ethereum == undefined) {
       alert("please install metamask");
@@ -86,8 +93,6 @@ export default function Home() {
     const accounts = await web3.eth.getAccounts();
     console.log("web3 account: ", accounts);
     const NFCContract = new web3.eth.Contract(abi);
-    let dummyOwners = ["0xF5591E14eB99aB51C10ba75DabA7d0D6345293eb", "0x9211cd5a0940FA9F71bcbcF1d45b0EC20Cb62A38"];
-    let dummyUrls = ["https://ipfs.io/1", "https://ipfs.io/2"];
 
     /**
      * The date functionality should eventually be transferred to the smart contract.
@@ -97,7 +102,7 @@ export default function Home() {
     let year = date.getFullYear();
     const deployment = await NFCContract.deploy({
       data: NFCJSON.bytecode,
-      arguments: [`GRADUATES-${month}-${year}`, "JKUAT", dummyOwners, dummyUrls]
+      arguments: [`GRADUATES-${month}-${year}`, "JKUAT", owners, urls]
     }).send({
       from: accounts[0]
     });
