@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import NFCJSON from './NFC.json';
 import Web3 from "web3";
 import { create } from "ipfs-http-client";
+import * as d3 from "d3";
 
 export default function Home() {
   const projectId = "2EOa6dNYowZzjK9u2lexz7yqWLA";
@@ -24,6 +25,7 @@ export default function Home() {
   const [isJSON, setIsJSON] = useState(false);
   const [isCSV, setIsCSV] = useState(false);
   const [jsonTextArea, setJsonTextArea] = useState("");
+  const [csvTextArea, setCSVTextArea] = useState("");
   const monthArray = [
     "January",
     "February",
@@ -115,6 +117,11 @@ export default function Home() {
     }
   }
 
+  async function parseCSV() {
+    const csv = d3.csvParse(csvTextArea);
+    console.log("csv: ", csv);
+  }
+
   const mintCertificates = async (owners, urls) => {
     const abi = NFCJSON.abi;
     if (window.ethereum == undefined) {
@@ -203,8 +210,10 @@ export default function Home() {
           }}>
             <p>Insert CSV</p>
           </section>
-          {isCSV && <section><textarea className='textarea' placeholder='Drag and Drop CSV File or Type CSV here...'></textarea><button className='button is-primary mt-3 mb-3' onClick={() => {
-
+          {isCSV && <section><textarea className='textarea' placeholder='Drag and Drop CSV File or Type CSV here...' onChange={(e) => {
+            setCSVTextArea(e.target.value);
+          }}></textarea><button className='button is-primary mt-3 mb-3' onClick={() => {
+            parseCSV();
           }}>Submit</button></section>}
 
 
