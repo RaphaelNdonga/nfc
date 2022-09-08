@@ -167,13 +167,15 @@ export default function Home() {
             <p>Insert JSON</p>
           </section>
           {isJSON && <section>
-            <textarea className='textarea' onDrop={(e) => {
-
+            <textarea id='jsonTextArea' className='textarea' onDrop={(e) => {
+              e.preventDefault();
               const fileReader = new FileReader();
               fileReader.addEventListener("load", () => {
                 console.log(fileReader.result);
+                const textArea = document.getElementById("jsonTextArea");
+                textArea.value = fileReader.result;
+                setTextAreaValue(textArea.value);
               });
-              e.preventDefault();
               const file = e.dataTransfer.files.item(0)
               fileReader.readAsText(file);
             }} onChange={(e) => {
