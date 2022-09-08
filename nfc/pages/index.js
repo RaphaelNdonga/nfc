@@ -167,7 +167,7 @@ export default function Home() {
             <p>Insert JSON</p>
           </section>
           {isJSON && <section>
-            <textarea id='jsonTextArea' className='textarea' onDrop={(e) => {
+            <textarea id='jsonTextArea' placeholder='Drag and Drop JSON File or Type JSON here...' className='textarea' onDrop={(e) => {
               e.preventDefault();
               const fileReader = new FileReader();
               fileReader.addEventListener("load", () => {
