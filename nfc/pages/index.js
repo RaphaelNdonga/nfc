@@ -203,7 +203,7 @@ export default function Home() {
                 textArea.value = fileReader.result;
                 setJsonTextArea(textArea.value);
               });
-              const file = e.dataTransfer.files.item(0)
+              const file = e.dataTransfer.files.item(0);
               fileReader.readAsText(file);
             }} onChange={(e) => {
               setJsonTextArea(e.target.value);
@@ -218,7 +218,19 @@ export default function Home() {
           }}>
             <p>Insert CSV</p>
           </section>
-          {isCSV && <section><textarea className='textarea' placeholder='Drag and Drop CSV File or Type CSV here...' onChange={(e) => {
+          {isCSV && <section><textarea id='csvTextArea' className='textarea' placeholder='Drag and Drop CSV File or Type CSV here...' onDrop={(e) => {
+            e.preventDefault();
+            const fileReader = new FileReader();
+            const textArea = document.getElementById('csvTextArea');
+
+            fileReader.addEventListener("load", () => {
+              textArea.value = fileReader.result;
+              setCSVTextArea(textArea.value);
+            });
+            const file = e.dataTransfer.files.item(0);
+            fileReader.readAsText(file);
+
+          }} onChange={(e) => {
             setCSVTextArea(e.target.value);
           }}></textarea><button className='button is-primary mt-3 mb-3' onClick={() => {
             parseCSV();
