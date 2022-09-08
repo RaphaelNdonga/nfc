@@ -167,7 +167,10 @@ export default function Home() {
             <p>Insert JSON</p>
           </section>
           {isJSON && <section>
-            <textarea className='textarea' onChange={(e) => {
+            <textarea className='textarea' onDrop={(e) => {
+              e.preventDefault();
+              console.log(e.dataTransfer.files.item(0))
+            }} onChange={(e) => {
               setTextAreaValue(e.target.value);
             }}></textarea>
             <button className='button is-primary mt-3 mb-3' onClick={() => {
