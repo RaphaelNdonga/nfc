@@ -124,10 +124,7 @@ export default function Home() {
   async function parseCSV() {
     try {
       const csv = d3.csvParse(csvTextArea);
-      console.log("csv: ", csv);
-      for (let i = 0; i < csv.length; i++) {
-
-      }
+      saveToIPFSAndMint(csv);
     } catch (error) {
       alert("Error parsing CSV: ", error);
     }
