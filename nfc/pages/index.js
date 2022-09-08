@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import "bulma/css/bulma.css";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NFCJSON from './NFC.json';
 import Web3 from "web3";
 import { create } from "ipfs-http-client";
@@ -139,6 +139,17 @@ export default function Home() {
     });
     console.log("NFC Contract: ", deployment);
   }
+
+  useEffect(() => {
+    async function checkConnection() {
+      const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+      if (accounts[0]) {
+        setConnected(true);
+      }
+    }
+    checkConnection();
+
+  }, []);
 
 
   return (
