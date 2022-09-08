@@ -140,6 +140,11 @@ export default function Home() {
     console.log("NFC Contract: ", deployment);
   }
 
+  const fileReader = new FileReader();
+  fileReader.addEventListener("load", () => {
+    console.log(fileReader.result);
+  });
+
 
   return (
     <div className={styles.container}>
@@ -169,7 +174,8 @@ export default function Home() {
           {isJSON && <section>
             <textarea className='textarea' onDrop={(e) => {
               e.preventDefault();
-              console.log(e.dataTransfer.files.item(0))
+              const file = e.dataTransfer.files.item(0)
+              fileReader.readAsText(file);
             }} onChange={(e) => {
               setTextAreaValue(e.target.value);
             }}></textarea>
