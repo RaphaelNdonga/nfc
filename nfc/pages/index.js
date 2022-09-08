@@ -22,7 +22,8 @@ export default function Home() {
   });
   const [connected, setConnected] = useState(false);
   const [isJSON, setIsJSON] = useState(false);
-  const [textAreaValue, setTextAreaValue] = useState("");
+  const [isCSV, setIsCSV] = useState(false);
+  const [jsonTextArea, setJsonTextArea] = useState("");
   const monthArray = [
     "January",
     "February",
@@ -67,7 +68,7 @@ export default function Home() {
     let owners = [];
     let urls = [];
     try {
-      const studentData = eval(textAreaValue);
+      const studentData = eval(jsonTextArea);
       console.log("Text area contains: ", studentData);
       for (let i = 0; i < studentData.length; i++) {
         const attributes = eval(studentData[i]);
@@ -185,27 +186,34 @@ export default function Home() {
                 console.log(fileReader.result);
                 const textArea = document.getElementById("jsonTextArea");
                 textArea.value = fileReader.result;
-                setTextAreaValue(textArea.value);
+                setJsonTextArea(textArea.value);
               });
               const file = e.dataTransfer.files.item(0)
               fileReader.readAsText(file);
             }} onChange={(e) => {
-              setTextAreaValue(e.target.value);
+              setJsonTextArea(e.target.value);
             }}></textarea>
             <button className='button is-primary mt-3 mb-3' onClick={() => {
               parseJSON()
             }}>Submit</button>
           </section>
           }
-          <section className='box is-clickable'>
+          <section className='box is-clickable' onClick={() => {
+            setIsCSV(!isCSV);
+          }}>
             <p>Insert CSV</p>
           </section>
+          {isCSV && <section><textarea className='textarea' placeholder='Drag and Drop CSV File or Type CSV here...'></textarea><button className='button is-primary mt-3 mb-3' onClick={() => {
+
+          }}>Submit</button></section>}
+
+
           <section className='box is-clickable'>
             <p>Insert one by one</p>
           </section>
         </div>
 
-      </main>
-    </div>
+      </main >
+    </div >
   )
 }
