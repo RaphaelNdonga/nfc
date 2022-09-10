@@ -49,21 +49,25 @@ export default function Home() {
     "Friday",
     "Saturday"
   ]
-  const connectMetamask = async () => {
+  const connectInjectedWallet = async () => {
     console.log("window.ethereum: ", window.ethereum);
     if (window.ethereum === undefined) {
-      alert("Please install metamask to use this dapp");
+      alert("Please install appropriate web3 wallet to use this dapp");
       return
     }
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    if (accounts[0]) {
-      console.log("setting connected to true");
-      setConnected(true);
-    } else {
-      console.log("setting connected to false");
-      setConnected(false);
+    try {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      if (accounts[0]) {
+        console.log("setting connected to true");
+        setConnected(true);
+      } else {
+        console.log("setting connected to false");
+        setConnected(false);
+      }
+      console.log("accounts: ", accounts);
+    } catch (error) {
+      alert("Please select appropriate web3 wallet to use this dapp")
     }
-    console.log("accounts: ", accounts);
   }
 
   const parseJSON = async () => {
@@ -182,7 +186,7 @@ export default function Home() {
           </div>
           <div className='navbar-end'>
 
-            {connected ? <button className='button is-primary' disabled>Connected</button> : <button className='button is-primary' onClick={connectMetamask}>Connect Wallet</button>}
+            {connected ? <button className='button is-primary' disabled>Connected</button> : <button className='button is-primary' onClick={connectInjectedWallet}>Connect Wallet</button>}
           </div>
 
         </div>
