@@ -7,8 +7,10 @@ import NFCJSON from './NFC.json';
 import Web3 from "web3";
 import { create } from "ipfs-http-client";
 import * as d3 from "d3";
+import { NFTStorage } from "nft.storage";
 
 export default function Home() {
+  const NFT_STORAGE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDNENTc3RTQwODAwRDM2YkYxNUI0Qzk0ODZFZmE4N2I4MEFGM0VBNjAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2Mjc5NzY3MzE2NCwibmFtZSI6Im5mYyJ9.0TgVJUuFUv-2Ff4bnDVKmYurzY0ffGi1xuIyLiotqC4'
   const projectId = "2EOa6dNYowZzjK9u2lexz7yqWLA";
   const projectSecret = "cda9ecceee45c322470cdde0596235cb";
   const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
@@ -82,6 +84,7 @@ export default function Home() {
   }
 
   async function saveToIPFSAndMint(studentArray) {
+    const nftStorage = new NFTStorage({ token: NFT_STORAGE_KEY });
     let owners = [];
     let urls = [];
     for (let i = 0; i < studentArray.length; i++) {
@@ -113,6 +116,25 @@ export default function Home() {
           },
         ]
       }
+      const nftStorageResult = await nftStorage.store({
+        name: "JKUAT GRADUATE CERTIFICATE",
+        image: imageLink,
+        description: `This is to certify that ${studentData.name} having satisfied all the requirements for the degree of ${studentData.course} ${studentData.honors} was admitted to the degree at a congregation held at this university on ${dayArray[day]} ${dateNumber} of ${monthArray[month]} in the year ${year}`,
+        properties: [
+          {
+            trait_type: "name",
+            value: studentData.name
+          },
+          {
+            trait_type: "honors",
+            value: studentData.honors
+          }, {
+            trait_type: "course",
+            value: studentData.course
+          },
+        ]
+      })
+      console.log("NFT Storage result: ", nftStorageResult);
       console.log("ipfs JSON", ipfsJSON);
       const ipfsFile = await client.add(JSON.stringify(ipfsJSON));
       const ipfsLink = `https://ipfs.io/ipfs/${ipfsFile.path}`
