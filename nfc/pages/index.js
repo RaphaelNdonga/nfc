@@ -8,6 +8,7 @@ import Web3 from "web3";
 import { create } from "ipfs-http-client";
 import * as d3 from "d3";
 import { NFTStorage } from "nft.storage";
+import { WidgetProps, WorldIDWidget } from "@worldcoin/id";
 
 export default function Home() {
   const NFT_STORAGE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDNENTc3RTQwODAwRDM2YkYxNUI0Qzk0ODZFZmE4N2I4MEFGM0VBNjAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2Mjc5NzY3MzE2NCwibmFtZSI6Im5mYyJ9.0TgVJUuFUv-2Ff4bnDVKmYurzY0ffGi1xuIyLiotqC4'
@@ -28,6 +29,7 @@ export default function Home() {
   const [isCSV, setIsCSV] = useState(false);
   const [jsonTextArea, setJsonTextArea] = useState("");
   const [csvTextArea, setCSVTextArea] = useState("");
+  const [proof, setProof] = useState(null)
   const monthArray = [
     "January",
     "February",
@@ -239,6 +241,7 @@ export default function Home() {
             }} onChange={(e) => {
               setJsonTextArea(e.target.value);
             }}></textarea>
+            <WorldIDWidget signal='my_signal' actionId='wid_staging_e7d4e0d03153192325b86179969b9bbe' onSuccess={proof => console.log("Proof is: ", proof)} />
             <button className='button is-primary mt-3 mb-3' onClick={() => {
               parseJSON()
             }}>Submit</button>
