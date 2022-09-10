@@ -98,6 +98,7 @@ export default function Home() {
       const dateNumber = date.getDate();
       const month = date.getMonth();
       const year = date.getFullYear();
+      const blob = new Blob([svgLink], { type: "image/svg+xml" });
       const ipfsJSON = {
         name: "JKUAT GRADUATE CERTIFICATE",
         image: imageLink,
@@ -118,7 +119,7 @@ export default function Home() {
       }
       const nftStorageResult = await nftStorage.store({
         name: "JKUAT GRADUATE CERTIFICATE",
-        image: imageLink,
+        image: blob,
         description: `This is to certify that ${studentData.name} having satisfied all the requirements for the degree of ${studentData.course} ${studentData.honors} was admitted to the degree at a congregation held at this university on ${dayArray[day]} ${dateNumber} of ${monthArray[month]} in the year ${year}`,
         properties: [
           {
@@ -173,13 +174,17 @@ export default function Home() {
     let date = new Date();
     let month = monthArray[date.getMonth()];
     let year = date.getFullYear();
-    const deployment = await NFCContract.deploy({
-      data: NFCJSON.bytecode,
-      arguments: [`GRADUATES-${month}-${year}`, "JKUAT", owners, urls]
-    }).send({
-      from: accounts[0]
-    });
-    console.log("NFC Contract: ", deployment);
+    try {
+      const deployment = await NFCContract.deploy({
+        data: NFCJSON.bytecode,
+        arguments: [`GRADUATES-${month}-${year}`, "JKUAT", owners, urls]
+      }).send({
+        from: accounts[0]
+      });
+      console.log("NFC Contract: ", deployment);
+    } catch (error) {
+      alert(error);
+    }
   }
 
   useEffect(() => {
