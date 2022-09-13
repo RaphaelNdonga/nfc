@@ -8,7 +8,7 @@ import Web3 from "web3";
 import { create } from "ipfs-http-client";
 import * as d3 from "d3";
 import { NFTStorage } from "nft.storage";
-import { ClipLoader } from "react-spinners/ClipLoader"
+import ClipLoader from "react-spinners/ClipLoader"
 
 export default function Home() {
   const NFT_STORAGE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDNENTc3RTQwODAwRDM2YkYxNUI0Qzk0ODZFZmE4N2I4MEFGM0VBNjAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2Mjc5NzY3MzE2NCwibmFtZSI6Im5mYyJ9.0TgVJUuFUv-2Ff4bnDVKmYurzY0ffGi1xuIyLiotqC4'
@@ -254,7 +254,7 @@ export default function Home() {
           }}>
             <p>Insert JSON</p>
           </section>
-          {isJSON && <section>
+          {isJSON && !loading && <section>
             <textarea id='jsonTextArea' placeholder='Drag and Drop JSON File or Type JSON here...' className='textarea' onDrop={(e) => {
               e.preventDefault();
               const fileReader = new FileReader();
@@ -270,10 +270,12 @@ export default function Home() {
               setJsonTextArea(e.target.value);
             }}></textarea>
             <button className='button is-primary mt-3 mb-3' onClick={() => {
-              parseJSON()
+              setLoading(true);
+              parseJSON();
             }}>Submit</button>
           </section>
           }
+          {loading && <ClipLoader loading={loading} />}
           <section className='box is-clickable' onClick={() => {
             setIsCSV(!isCSV);
           }}>
