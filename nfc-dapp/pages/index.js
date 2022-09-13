@@ -211,7 +211,7 @@ export default function Home() {
       });
       console.log("NFC Contract: ", deployment);
     } catch (error) {
-      alert(error);
+      alert(error.message);
     }
   }
 
