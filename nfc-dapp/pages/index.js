@@ -76,13 +76,24 @@ export default function Home() {
     try {
       const studentData = eval(jsonTextArea);
       console.log("Text area contains: ", studentData);
+      checkFormat(studentData);
       saveToIPFSAndMint(studentData);
     }
     catch (error) {
-      alert(`Parse JSON error: ${error.message}`)
+      if (error instanceof SyntaxError) {
+        alert(`${error}: Ensure the format is as follows:
+        {
+          [
+            {name: "...", address: "...", honors: "...", course: "..."},
+            {name: "...", address: "...", honors: "...", course: "..."},
+            
+          ]
+          }`)
+      } else {
+        alert(`Parse JSON Error: ${error}`)
+      }
     }
   }
-
   async function saveToIPFSAndMint(studentArray) {
     const nftStorage = new NFTStorage({ token: NFT_STORAGE_KEY });
     let owners = [];
@@ -148,12 +159,29 @@ export default function Home() {
     mintCertificates(owners, urls);
   }
 
+  const checkFormat = (studentData) => {
+    for (let i = 0; i < studentData.length; i++) {
+      if (!studentData[i].name || !studentData[i].address || !studentData[i].honors || !studentData[i].course) {
+        throw SyntaxError(`Item number ${i + 1}`);
+      }
+    }
+  }
+
   async function parseCSV() {
     try {
       const csv = d3.csvParse(csvTextArea);
+      console.log("Text area contains: ", csv);
+      checkFormat(csv);
       saveToIPFSAndMint(csv);
     } catch (error) {
-      alert("Error parsing CSV: ", error);
+      if (error instanceof SyntaxError) {
+        alert(`${error}: Ensure the format is as follows:
+           name   ,   address,      honors,      course
+        ..{name}..,..{address}..,..{honors}..,..{course}..
+        ..{name}..,..{address}..,..{honors}..,..{course}..`)
+      } else {
+        alert(`Parse JSON Error: ${error}`)
+      }
     }
   }
 
