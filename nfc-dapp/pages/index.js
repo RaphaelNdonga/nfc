@@ -8,6 +8,7 @@ import Web3 from "web3";
 import { create } from "ipfs-http-client";
 import * as d3 from "d3";
 import { NFTStorage } from "nft.storage";
+import ClipLoader from "react-spinners/ClipLoader"
 
 export default function Home() {
   const NFT_STORAGE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDNENTc3RTQwODAwRDM2YkYxNUI0Qzk0ODZFZmE4N2I4MEFGM0VBNjAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2Mjc5NzY3MzE2NCwibmFtZSI6Im5mYyJ9.0TgVJUuFUv-2Ff4bnDVKmYurzY0ffGi1xuIyLiotqC4'
@@ -28,6 +29,7 @@ export default function Home() {
   const [isCSV, setIsCSV] = useState(false);
   const [jsonTextArea, setJsonTextArea] = useState("");
   const [csvTextArea, setCSVTextArea] = useState("");
+  const [dataLoading, setDataLoading] = useState(false);
   const monthArray = [
     "January",
     "February",
@@ -72,7 +74,7 @@ export default function Home() {
     }
   }
 
-  const parseJSON = async () => {
+  const parseJSON = () => {
     try {
       const studentData = eval(jsonTextArea);
       console.log("Text area contains: ", studentData);
@@ -92,6 +94,7 @@ export default function Home() {
       } else {
         alert(`Parse JSON Error: ${error}`)
       }
+      setDataLoading(false);
     }
   }
   async function saveToIPFSAndMint(studentArray) {
@@ -182,6 +185,7 @@ export default function Home() {
       } else {
         alert(`Parse JSON Error: ${error}`)
       }
+      setDataLoading(false);
     }
   }
 
@@ -210,7 +214,9 @@ export default function Home() {
         from: accounts[0]
       });
       console.log("NFC Contract: ", deployment);
+      setDataLoading(false);
     } catch (error) {
+      setDataLoading(false);
       alert(error.message);
     }
   }
@@ -225,6 +231,15 @@ export default function Home() {
     checkConnection();
 
   }, []);
+
+  useEffect(() => {
+    if (isJSON && dataLoading) {
+      parseJSON();
+    }
+    if (isCSV && dataLoading) {
+      parseCSV();
+    }
+  }, [dataLoading])
 
 
   return (
@@ -248,11 +263,12 @@ export default function Home() {
         <div className='container m-6'>
           <p className='is-size-3 mb-2'>How would you like to generate graduate certificates?</p>
           <section className='box is-clickable' onClick={() => {
+            setIsCSV(false);
             setIsJSON(!isJSON);
           }}>
             <p>Insert JSON</p>
           </section>
-          {isJSON && <section>
+          {isJSON && !dataLoading && <section>
             <textarea id='jsonTextArea' placeholder='Drag and Drop JSON File or Type JSON here...' className='textarea' onDrop={(e) => {
               e.preventDefault();
               const fileReader = new FileReader();
@@ -268,16 +284,18 @@ export default function Home() {
               setJsonTextArea(e.target.value);
             }}></textarea>
             <button className='button is-primary mt-3 mb-3' onClick={() => {
-              parseJSON()
+              setDataLoading(true);
             }}>Submit</button>
           </section>
           }
+          {isJSON && dataLoading && <ClipLoader loading={dataLoading} />}
           <section className='box is-clickable' onClick={() => {
+            setIsJSON(false);
             setIsCSV(!isCSV);
           }}>
             <p>Insert CSV</p>
           </section>
-          {isCSV && <section><textarea id='csvTextArea' className='textarea' placeholder='Drag and Drop CSV File or Type CSV here...' onDrop={(e) => {
+          {isCSV && !dataLoading && <section><textarea id='csvTextArea' className='textarea' placeholder='Drag and Drop CSV File or Type CSV here...' onDrop={(e) => {
             e.preventDefault();
             const fileReader = new FileReader();
             const textArea = document.getElementById('csvTextArea');
@@ -292,8 +310,9 @@ export default function Home() {
           }} onChange={(e) => {
             setCSVTextArea(e.target.value);
           }}></textarea><button className='button is-primary mt-3 mb-3' onClick={() => {
-            parseCSV();
+            setDataLoading(true);
           }}>Submit</button></section>}
+          {isCSV && dataLoading && <ClipLoader loading={dataLoading} />}
 
 
           <section className='box is-clickable'>
