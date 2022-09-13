@@ -5,20 +5,15 @@
 // will compile your contracts, add the Hardhat Runtime Environment's members to the
 // global scope, and execute the script.
 const hre = require("hardhat");
+const { ethers } = require("hardhat");
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
-
-  const lockedAmount = hre.ethers.utils.parseEther("1");
-
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
-
-  await lock.deployed();
-
-  console.log("Lock with 1 ETH deployed to:", lock.address);
+  const NFCFactory = await ethers.getContractFactory("NFC");
+  let dummyOwners = ["0xF5591E14eB99aB51C10ba75DabA7d0D6345293eb", "0x9211cd5a0940FA9F71bcbcF1d45b0EC20Cb62A38"];
+  let dummyUrls = ["https://ipfs.io/1", "https://ipfs.io/2"];
+  const NFC = await NFCFactory.deploy("JKUAT-GRADUATES-2022", "JKUAT Certificate", dummyOwners, dummyUrls);
+  await NFC.deployed();
+  console.log("NFC: ", NFC);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
