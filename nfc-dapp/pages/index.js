@@ -313,11 +313,6 @@ export default function Home() {
             setDataLoading(true);
           }}>Submit</button></section>}
           {isCSV && dataLoading && <ClipLoader loading={dataLoading} />}
-
-
-          <section className='box is-clickable'>
-            <p>Insert one by one</p>
-          </section>
         </div>
 
       </main >
