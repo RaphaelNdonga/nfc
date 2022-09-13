@@ -29,7 +29,7 @@ export default function Home() {
   const [isCSV, setIsCSV] = useState(false);
   const [jsonTextArea, setJsonTextArea] = useState("");
   const [csvTextArea, setCSVTextArea] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [dataLoading, setDataLoading] = useState(false);
   const monthArray = [
     "January",
     "February",
@@ -94,7 +94,7 @@ export default function Home() {
       } else {
         alert(`Parse JSON Error: ${error}`)
       }
-      setLoading(false);
+      setDataLoading(false);
     }
   }
   async function saveToIPFSAndMint(studentArray) {
@@ -213,9 +213,9 @@ export default function Home() {
         from: accounts[0]
       });
       console.log("NFC Contract: ", deployment);
-      setLoading(false);
+      setDataLoading(false);
     } catch (error) {
-      setLoading(false);
+      setDataLoading(false);
       alert(error.message);
     }
   }
@@ -232,10 +232,13 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (isJSON && loading) {
-      parseJSON()
+    if (isJSON && dataLoading) {
+      parseJSON();
     }
-  }, [loading])
+    if (isCSV && dataLoading) {
+      parseCSV();
+    }
+  }, [dataLoading])
 
 
   return (
@@ -259,11 +262,12 @@ export default function Home() {
         <div className='container m-6'>
           <p className='is-size-3 mb-2'>How would you like to generate graduate certificates?</p>
           <section className='box is-clickable' onClick={() => {
+            setIsCSV(false);
             setIsJSON(!isJSON);
           }}>
             <p>Insert JSON</p>
           </section>
-          {isJSON && !loading && <section>
+          {isJSON && !dataLoading && <section>
             <textarea id='jsonTextArea' placeholder='Drag and Drop JSON File or Type JSON here...' className='textarea' onDrop={(e) => {
               e.preventDefault();
               const fileReader = new FileReader();
@@ -279,17 +283,18 @@ export default function Home() {
               setJsonTextArea(e.target.value);
             }}></textarea>
             <button className='button is-primary mt-3 mb-3' onClick={() => {
-              setLoading(true);
+              setDataLoading(true);
             }}>Submit</button>
           </section>
           }
-          {loading && <ClipLoader loading={loading} />}
+          {isJSON && dataLoading && <ClipLoader loading={dataLoading} />}
           <section className='box is-clickable' onClick={() => {
+            setIsJSON(false);
             setIsCSV(!isCSV);
           }}>
             <p>Insert CSV</p>
           </section>
-          {isCSV && <section><textarea id='csvTextArea' className='textarea' placeholder='Drag and Drop CSV File or Type CSV here...' onDrop={(e) => {
+          {isCSV && !dataLoading && <section><textarea id='csvTextArea' className='textarea' placeholder='Drag and Drop CSV File or Type CSV here...' onDrop={(e) => {
             e.preventDefault();
             const fileReader = new FileReader();
             const textArea = document.getElementById('csvTextArea');
@@ -304,8 +309,9 @@ export default function Home() {
           }} onChange={(e) => {
             setCSVTextArea(e.target.value);
           }}></textarea><button className='button is-primary mt-3 mb-3' onClick={() => {
-            parseCSV();
+            setDataLoading(true);
           }}>Submit</button></section>}
+          {isCSV && dataLoading && <ClipLoader loading={dataLoading} />}
 
 
           <section className='box is-clickable'>
