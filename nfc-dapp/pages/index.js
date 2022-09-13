@@ -74,7 +74,7 @@ export default function Home() {
     }
   }
 
-  const parseJSON = async () => {
+  const parseJSON = () => {
     try {
       const studentData = eval(jsonTextArea);
       console.log("Text area contains: ", studentData);
@@ -212,7 +212,9 @@ export default function Home() {
         from: accounts[0]
       });
       console.log("NFC Contract: ", deployment);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       alert(error.message);
     }
   }
@@ -227,6 +229,12 @@ export default function Home() {
     checkConnection();
 
   }, []);
+
+  useEffect(() => {
+    if (isJSON && loading) {
+      parseJSON()
+    }
+  }, [loading])
 
 
   return (
@@ -271,7 +279,6 @@ export default function Home() {
             }}></textarea>
             <button className='button is-primary mt-3 mb-3' onClick={() => {
               setLoading(true);
-              parseJSON();
             }}>Submit</button>
           </section>
           }
