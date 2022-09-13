@@ -17,7 +17,7 @@ describe("NFC Test", function () {
     it("NFC deployed", async () => {
         console.log("NFC: ", NFC.abi);
         expect(NFC).not.null
-        fs.copyFileSync(__dirname + "/../artifacts/contracts/NFC.sol/NFC.json", __dirname + "/../../nfc/pages/NFC.json")
+        fs.copyFileSync(__dirname + "/../artifacts/contracts/NFC.sol/NFC.json", __dirname + "/../../nfc-dapp/pages/NFC.json")
     })
     it("should increase the counter", async () => {
         let counter = await NFC.counter();
