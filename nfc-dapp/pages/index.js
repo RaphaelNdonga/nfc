@@ -94,6 +94,7 @@ export default function Home() {
       } else {
         alert(`Parse JSON Error: ${error}`)
       }
+      setLoading(false);
     }
   }
   async function saveToIPFSAndMint(studentArray) {
