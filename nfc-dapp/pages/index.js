@@ -8,6 +8,7 @@ import Web3 from "web3";
 import { create } from "ipfs-http-client";
 import * as d3 from "d3";
 import { NFTStorage } from "nft.storage";
+import { ClipLoader } from "react-spinners/ClipLoader"
 
 export default function Home() {
   const NFT_STORAGE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDNENTc3RTQwODAwRDM2YkYxNUI0Qzk0ODZFZmE4N2I4MEFGM0VBNjAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2Mjc5NzY3MzE2NCwibmFtZSI6Im5mYyJ9.0TgVJUuFUv-2Ff4bnDVKmYurzY0ffGi1xuIyLiotqC4'
@@ -28,6 +29,7 @@ export default function Home() {
   const [isCSV, setIsCSV] = useState(false);
   const [jsonTextArea, setJsonTextArea] = useState("");
   const [csvTextArea, setCSVTextArea] = useState("");
+  const [loading, setLoading] = useState(false);
   const monthArray = [
     "January",
     "February",
