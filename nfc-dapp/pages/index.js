@@ -190,6 +190,8 @@ export default function Home() {
   }
 
   const mintCertificates = async (owners, urls) => {
+    console.log("owners: ", owners);
+    console.log("urls: ", urls);
     const abi = NFCJSON.abi;
     if (window.ethereum == undefined) {
       alert("please install metamask");
