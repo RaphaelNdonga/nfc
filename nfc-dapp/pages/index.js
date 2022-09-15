@@ -268,7 +268,7 @@ export default function Home() {
               console.log("isCSV: ", isCSV);
               console.log("If i am in ...")
               // connectInjectedWallet()
-              mintCertificates();
+              connectInjectedWallet();
             }
             }>Connect Wallet</button>}
           </div>
