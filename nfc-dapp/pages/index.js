@@ -160,7 +160,7 @@ export default function Home() {
     }
     console.log("owners: ", owners);
     console.log("urls: ", urls);
-    mintCerts(owners, urls);
+    // mintCerts(owners, urls);
   }
 
   const checkFormat = (studentData) => {
@@ -190,42 +190,42 @@ export default function Home() {
     }
   }
 
-  // const mintCerts = async (owners, urls) => {
-  //   console.log("Here, I am out of my mind");
-  //   if (!owners || !urls) {
-  //     return;
-  //   }
-  //   const abi = NFCJSON.abi;
-  //   if (window.ethereum == undefined) {
-  //     alert("please install metamask");
-  //     return;
-  //   }
-  //   const web3 = new Web3(window.ethereum);
-  //   const accounts = await web3.eth.getAccounts();
-  //   console.log("We are minting certificates.");
-  //   console.log("web3 account: ", accounts);
-  //   const NFCContract = new web3.eth.Contract(abi);
+  const otieno = async (owners, urls) => {
+    console.log("Here, I am out of my mind");
+    if (!owners || !urls) {
+      return;
+    }
+    const abi = NFCJSON.abi;
+    if (window.ethereum == undefined) {
+      alert("please install metamask");
+      return;
+    }
+    const web3 = new Web3(window.ethereum);
+    const accounts = await web3.eth.getAccounts();
+    console.log("We are minting certificates.");
+    console.log("web3 account: ", accounts);
+    const NFCContract = new web3.eth.Contract(abi);
 
-  //   /**
-  //    * The date functionality should eventually be transferred to the smart contract.
-  //    */
-  //   let date = new Date();
-  //   let month = monthArray[date.getMonth()];
-  //   let year = date.getFullYear();
-  //   try {
-  //     const deployment = await NFCContract.deploy({
-  //       data: NFCJSON.bytecode,
-  //       arguments: [`GRADUATES-${month}-${year}`, "JKUAT", owners, urls]
-  //     }).send({
-  //       from: accounts[0]
-  //     });
-  //     console.log("NFC Contract: ", deployment);
-  //     setDataLoading(false);
-  //   } catch (error) {
-  //     setDataLoading(false);
-  //     alert(error.message);
-  //   }
-  // }
+    /**
+     * The date functionality should eventually be transferred to the smart contract.
+     */
+    let date = new Date();
+    let month = monthArray[date.getMonth()];
+    let year = date.getFullYear();
+    try {
+      const deployment = await NFCContract.deploy({
+        data: NFCJSON.bytecode,
+        arguments: [`GRADUATES-${month}-${year}`, "JKUAT", owners, urls]
+      }).send({
+        from: accounts[0]
+      });
+      console.log("NFC Contract: ", deployment);
+      setDataLoading(false);
+    } catch (error) {
+      setDataLoading(false);
+      alert(error.message);
+    }
+  }
 
   useEffect(() => {
     async function checkConnection() {
