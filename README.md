@@ -1,4 +1,4 @@
-## [NFC DEMO]("https://non-fungible-certificates.netlify.app/")
+## [NFC DEMO](https://non-fungible-certificates.netlify.app/)
 
 ## WHAT IS NFC?
 NFC is an acronym for Non Fungible Certificates.
