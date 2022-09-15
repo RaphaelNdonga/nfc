@@ -160,7 +160,7 @@ export default function Home() {
     }
     console.log("owners: ", owners);
     console.log("urls: ", urls);
-    mintCertificates(owners, urls);
+    mintCerts(owners, urls);
   }
 
   const checkFormat = (studentData) => {
@@ -190,7 +190,7 @@ export default function Home() {
     }
   }
 
-  const mintCertificates = async (owners, urls) => {
+  const mintCerts = async (owners, urls) => {
     console.log("Here, I am out of my mind");
     if (!owners || !urls) {
       return;
