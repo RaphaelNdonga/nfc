@@ -53,7 +53,7 @@ export default function Home() {
     "Friday",
     "Saturday"
   ]
-  async function otieno(owners, urls) {
+  async function mintCerts(owners, urls) {
     console.log("Here, I am out of my mind");
     if (!owners || !urls) {
       return;
@@ -196,7 +196,7 @@ export default function Home() {
     }
     console.log("owners: ", owners);
     console.log("urls: ", urls);
-    // mintCerts(owners, urls);
+    mintCerts(owners, urls);
   }
 
   const checkFormat = (studentData) => {
