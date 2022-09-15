@@ -267,7 +267,7 @@ export default function Home() {
               console.log("isJSON: ", isJSON);
               console.log("isCSV: ", isCSV);
               console.log("If i am in ...")
-              connectInjectedWallet()
+              // connectInjectedWallet()
             }
             }>Connect Wallet</button>}
           </div>
