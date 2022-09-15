@@ -197,6 +197,7 @@ export default function Home() {
     }
     const web3 = new Web3(window.ethereum);
     const accounts = await web3.eth.getAccounts();
+    console.log("We are minting certificates.");
     console.log("web3 account: ", accounts);
     const NFCContract = new web3.eth.Contract(abi);
 
@@ -256,7 +257,13 @@ export default function Home() {
           </div>
           <div className='navbar-end'>
 
-            {connected ? <button className='button is-primary' disabled>Connected</button> : <button className='button is-primary' onClick={connectInjectedWallet}>Connect Wallet</button>}
+            {connected ? <button className='button is-primary' disabled>Connected</button> : <button className='button is-primary' onClick={() => {
+              console.log("Connect wallet clicked. Below is the state of the data: ");
+              console.log("isJSON: ", isJSON);
+              console.log("isCSV: ", isCSV);
+              connectInjectedWallet()
+            }
+            }>Connect Wallet</button>}
           </div>
 
         </div>
