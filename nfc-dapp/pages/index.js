@@ -54,6 +54,7 @@ export default function Home() {
     "Saturday"
   ]
   const connectInjectedWallet = async () => {
+    console.log("Here I am ok");
     console.log("window.ethereum: ", window.ethereum);
     if (window.ethereum === undefined) {
       alert("Please install appropriate web3 wallet to use this dapp");
@@ -190,6 +191,7 @@ export default function Home() {
   }
 
   const mintCertificates = async (owners, urls) => {
+    console.log("Here, I am out of my mind");
     if (!owners || !urls) {
       return;
     }
@@ -264,6 +266,7 @@ export default function Home() {
               console.log("Connect wallet clicked. Below is the state of the data: ");
               console.log("isJSON: ", isJSON);
               console.log("isCSV: ", isCSV);
+              console.log("If i am in ...")
               connectInjectedWallet()
             }
             }>Connect Wallet</button>}
