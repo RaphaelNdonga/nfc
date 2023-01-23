@@ -52,7 +52,6 @@ export default function Home() {
     "Saturday"
   ]
   async function mintCerts(owners, urls) {
-    console.log("Here, I am out of my mind");
     if (!owners || !urls) {
       return;
     }
@@ -133,7 +132,6 @@ export default function Home() {
     }
   }
   async function saveToIPFSAndMint(studentArray) {
-    console.log("hey hey heeey");
     let owners = [];
     let urls = [];
     for (let i = 0; i < studentArray.length; i++) {

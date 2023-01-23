@@ -14,6 +14,12 @@ describe("NFC Test", function () {
         NFC = await NFCFactory.deploy("JKUAT-GRADUATES-2022", "JKUAT Certificate", dummyOwners, dummyUrls);
         await NFC.deployed();
     });
+    it("has correct owners", async () => {
+        let owner1 = await NFC.ownerOf(1);
+        expect(owner1).equal(dummyOwners[0])
+        let owner2 = await NFC.ownerOf(2);
+        expect(owner2).equal(dummyOwners[1])
+    })
     it("NFC deployed", async () => {
         console.log("NFC: ", NFC.abi);
         expect(NFC).not.null
